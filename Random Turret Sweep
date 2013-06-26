@@ -1,0 +1,64 @@
+#include <Servo.h> 
+ 
+Servo myservo;  // create servo object to control a servo 
+Servo joe;
+                // a maximum of eight servo objects can be created 
+ 
+int pos = 0;    // variable to store the servo position 
+
+
+void setup() 
+{ 
+  Serial.begin(9600);
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object 
+  joe.attach(10);
+  pinMode(13, OUTPUT);
+} 
+ 
+ 
+void loop() 
+{  
+   Serial.println("Hello!");
+   digitalWrite(13, HIGH);
+   Serial.println("Laser On.");
+   delay(100);
+   digitalWrite(13, LOW);
+   Serial.println("Laser Off.");
+   blinkLazer();
+   sweep(20, 160);
+   delay(100);
+   for (int m = 0; m < random(0,4); ++m)
+   {
+     sweep(20, 85); 
+     delay(100);
+   }
+} 
+// use digitalWrite(5, HIGH/LOW)
+
+void sweep(int start, int finish)
+{ 
+  
+  for(int pos = start; pos < finish; pos += random(1,40))  // goes from 0 degrees to 180 degrees 
+  {                                  // in steps of 1 degree 
+    myservo.write(pos);              // tell servo to go to position in variable 'pos' 
+    joe.write(pos-20);              // tell servo to go to position in variable 'pos' 
+    delay(20);                       // waits 15ms for the servo to reach the position 
+  } 
+  for(int pos = finish; pos>=start; pos -= random(6,20))     // goes from 180 degrees to 0 degrees 
+  {                                
+    myservo.write(pos);              // tell servo to go to position in variable 'pos' 
+    joe.write(pos+20);              // tell servo to go to position in variable 'pos' 
+    delay(15);                       // waits 15ms for the servo to reach the position 
+  } 
+}
+
+void blinkLazer()
+{  
+   for(int frank = 0; frank < 5; frank++)
+   {
+     digitalWrite(13, HIGH);
+     delay(100);
+     digitalWrite(13, LOW);
+     delay(100);
+   }
+}
